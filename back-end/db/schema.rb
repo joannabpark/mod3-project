@@ -13,10 +13,8 @@
 ActiveRecord::Schema.define(version: 2020_09_28_163620) do
 
   create_table "matches", force: :cascade do |t|
-    t.integer "matcher_id", null: false
-    t.integer "matchee_id", null: false
-    t.index ["matchee_id"], name: "index_matches_on_matchee_id"
-    t.index ["matcher_id"], name: "index_matches_on_matcher_id"
+    t.integer "matcher_id"
+    t.integer "matchee_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -34,6 +32,4 @@ ActiveRecord::Schema.define(version: 2020_09_28_163620) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "matches", "matchees"
-  add_foreign_key "matches", "matchers"
 end
