@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_28_163620) do
+ActiveRecord::Schema.define(version: 2020_09_28_211650) do
 
   create_table "matches", force: :cascade do |t|
     t.integer "matcher_id"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2020_09_28_163620) do
     t.string "veggie_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "bio"
   end
 
 end
