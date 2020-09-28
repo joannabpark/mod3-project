@@ -8,4 +8,10 @@ class MatchesController < ApplicationController
         render json: MatchSerializer.new(match, options)
       end
 
+      def destroy
+          match = Match.find(params[:id])
+          match.destroy
+          render json: { message: 'success'}
+      end
+
 end
