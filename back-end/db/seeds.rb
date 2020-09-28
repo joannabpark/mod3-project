@@ -18,6 +18,4 @@ User.create(name:"Kelly", age:"27", image_url:"https://www.google.com/url?sa=i&u
 User.create(name:"Liz", age:"40", image_url:"https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.dreamstime.com%2Fillustration%2Fwoman-eating-salad-cartoon.html&psig=AOvVaw1pNl7PzCOVwhhRweMSe6AA&ust=1601390902191000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKCTmZWMjOwCFQAAAAAdAAAAABAD", attracted_to:"female", occupation:"Teacher", interests:"Baking", location: "Chicago", phone_number:"123-456-7890", email_address:"Annie@gmail.com", veggie_type:"Lacto")
 User.create(name:"Nilay", age:"35", image_url:"https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.dreamstime.com%2Fillustration%2Fwoman-eating-salad-cartoon.html&psig=AOvVaw1pNl7PzCOVwhhRweMSe6AA&ust=1601390902191000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKCTmZWMjOwCFQAAAAAdAAAAABAD", attracted_to:"female", occupation:"Teacher", interests:"Baking", location: "Chicago", phone_number:"123-456-7890", email_address:"Annie@gmail.com", veggie_type:"Lacto")
 
-
-
 puts "Complete!"
