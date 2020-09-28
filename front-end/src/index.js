@@ -1,13 +1,16 @@
 function main(){
-
+    showProfiles()
 }
 
 function showProfiles(){
-    fetch()
+    fetch('http://localhost:3000/users')
     .then(resp => resp.json())
-    .then(profiles => {
-        profiles.forEach(function(){
-            
-        })
+    .then(profile => {
+        debugger
+        profile
+
     })
 }
+
+
+main()
