@@ -10,30 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_28_033539) do
+ActiveRecord::Schema.define(version: 2020_09_28_163620) do
 
   create_table "matches", force: :cascade do |t|
-    t.integer "user_id_id", null: false
-    t.integer "other_user_id_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["other_user_id_id"], name: "index_matches_on_other_user_id_id"
-    t.index ["user_id_id"], name: "index_matches_on_user_id_id"
-  end
-
-  create_table "other_users", force: :cascade do |t|
-    t.string "name"
-    t.integer "age"
-    t.string "image_url"
-    t.string "attracted_to"
-    t.string "occupation"
-    t.string "interests"
-    t.string "location"
-    t.string "phone_number"
-    t.string "email_address"
-    t.string "veggie_type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.integer "matcher_id", null: false
+    t.integer "matchee_id", null: false
+    t.index ["matchee_id"], name: "index_matches_on_matchee_id"
+    t.index ["matcher_id"], name: "index_matches_on_matcher_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -51,6 +34,6 @@ ActiveRecord::Schema.define(version: 2020_09_28_033539) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "matches", "other_user_ids"
-  add_foreign_key "matches", "user_ids"
+  add_foreign_key "matches", "matchees"
+  add_foreign_key "matches", "matchers"
 end
