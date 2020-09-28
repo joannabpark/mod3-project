@@ -21,7 +21,7 @@ function showProfiles(){
                 <img src="${profile.attributes.image_url}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${profile.attributes.name}</h5>
-                    <p class="card-text">I play hard. I play fast.</p>
+                    <p class="card-text">${profile.attributes.bio}</p>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">${profile.attributes.age}</li>
