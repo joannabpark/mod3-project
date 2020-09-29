@@ -6,7 +6,9 @@ const header = document.querySelector('#header')
 const meatText = document.querySelector('#meat')
 const createProfileLink = document.querySelector('#create-profile-link')
 const createProfileForm = document.querySelector('#create-profile-form')
-const titleHeader = document.querySelector('#title-header')
+
+const deleteProfileForm = document.querySelector('#delete-me')
+const titleHeader = document.querySelector('#title-header'
 
 
 //Need to include password entry
@@ -41,6 +43,10 @@ function createProfile(){
         createProfileForm.style.display = "block"
         createProfileFormSubmission()
     })
+}
+
+function deleteProfile(){
+
 }
 
 function createProfileFormSubmission(){
