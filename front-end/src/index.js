@@ -5,7 +5,6 @@ const potentialContainer = document.querySelector('#potential-matches')
 const header = document.querySelector('#header')
 const meatText = document.querySelector('#meat')
 
-
 function signIn(){
     navBar.style.display = "none"
     formContainer.addEventListener('submit', function(event){
@@ -15,11 +14,12 @@ function signIn(){
         .then(resp => resp.json())
         .then(profiles => {
             const array = profiles.data.map(function(profile){ return profile.attributes.name })
-            // if (array.include(name){
-            //     formContainer.style.display = "none"
-            //     navBar.style.display = "block"
-            //     displaySignedInUser(name)
-            // }
+            if (array.includes(name)){
+                formContainer.style.display = "none"
+                navBar.style.display = "block"
+                displaySignedInUser(name)
+            }
+
         })
         debugger
     }) 
@@ -28,7 +28,6 @@ function signIn(){
 function displaySignedInUser(name){
     console.log(name)
 }
-
 
 // function to display all users
 function showProfiles(){
