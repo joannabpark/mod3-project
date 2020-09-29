@@ -5,8 +5,8 @@ const potentialContainer = document.querySelector('#potential-matches')
 const header = document.querySelector('#header')
 const meatText = document.querySelector('#meat')
 const createProfileLink = document.querySelector('#create-profile-link')
-const createProfileForm = document.querySelector('#create-profile-form')
-
+const createProfileFormDiv = document.querySelector('#create-profile-form-div')
+const createProfileForm = document.querySelector('#create-form')
 
 //Need to include password entry
 //function to let user sign-in before seeing profile and matches
@@ -16,6 +16,7 @@ function signIn(){
     signInFormContainer.addEventListener('submit', function(event){
         event.preventDefault()
         const name = event.target[0].value
+        const password = event.target[1].value
         fetch('http://localhost:3000/users')
         .then(resp => resp.json())
         .then(profiles => {
@@ -42,7 +43,7 @@ function createProfile(){
 }
 
 function createProfileFormSubmission(){
-    createProfileForm.addEventListener('submit', function(event){
+    createProfileFormDiv.addEventListener('submit', function(event){
         event.preventDefault()
         const name = event.target[0].value
         const password = event.target[1].value
@@ -55,12 +56,12 @@ function createProfileFormSubmission(){
         const phoneNumber = event.target[8].value
         const emailAddress = event.target[9].value
         const veggieType = event.target[10].value
+        const bio = event.target[11].value
 
-        newProfile = { 
-            type: "user", 
-            attributes: {
+
+        newProfile = {
             name: name,
-            // password: password,
+            password: password,
             age: age,
             image_url: imageUrl,
             attracted_to: attractedTo, 
@@ -69,8 +70,8 @@ function createProfileFormSubmission(){
             location: location, 
             phone_number: phoneNumber,
             email_address: emailAddress,
-            veggie_type: veggieType 
-            }
+            veggie_type: veggieType, 
+            bio: bio
         }
 
         reqObj = {
@@ -84,10 +85,10 @@ function createProfileFormSubmission(){
         fetch('http://localhost:3000/users', reqObj)
         .then(resp => resp.json())
         .then(newProfile => {
+            console.log(newProfile)
             createProfileForm.reset()
-            createProfileForm.style.display = "none"
-            debugger
-            // showUserAndPotentialMatchProfiles(newProfile.attributes.name)
+            createProfileFormDiv.style.display = "none"
+            showUserAndPotentialMatchProfiles(newProfile.data.attributes.name)
         })
     })
 }
