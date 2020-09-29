@@ -1,13 +1,18 @@
-const formContainer = document.querySelector('.form-container')
+const signInFormContainer = document.querySelector('#sign-in-form')
 const navBar = document.querySelector('#nav-bar')
 const userContainer = document.querySelector('#user-container')
 const potentialContainer = document.querySelector('#potential-matches')
 const header = document.querySelector('#header')
 const meatText = document.querySelector('#meat')
+const createProfileLink = document.querySelector('#create-profile-link')
+const createProfileForm = document.querySelector('#create-profile-form')
 
+
+//Need to include password entry
 function signIn(){
     navBar.style.display = "none"
-    formContainer.addEventListener('submit', function(event){
+    createProfileForm.style.display = "none"
+    signInFormContainer.addEventListener('submit', function(event){
         event.preventDefault()
         const name = event.target[0].value
         fetch('http://localhost:3000/users')
@@ -15,14 +20,75 @@ function signIn(){
         .then(profiles => {
             const array = profiles.data.map(function(profile){ return profile.attributes.name })
             if (array.includes(name)){
-                formContainer.style.display = "none"
+                signInFormContainer.style.display = "none"
                 navBar.style.display = "block"
                 displaySignedInUser(name)
+            } else {
+                alert("Incorrect Name or Password")
             }
-
         })
-        debugger
-    }) 
+    })
+}
+
+function createProfile(){
+    navBar.style.display = "none"
+    createProfileForm.style.display = "none"
+    createProfileLink.addEventListener('click', function(event){
+        signInFormContainer.style.display = "none"
+        createProfileForm.style.display = "block"
+        createProfileFormSubmission()
+    })
+}
+
+function createProfileFormSubmission(){
+    createProfileForm.addEventListener('submit', function(event){
+        event.preventDefault()
+        const name = event.target[0].value
+        const password = event.target[1].value
+        const age = event.target[2].value
+        const imageUrl = event.target[3].value
+        const attractedTo = event.target[4].value
+        const occupation = event.target[5].value
+        const interests = event.target[6].value
+        const location = event.target[7].value
+        const phoneNumber = event.target[8].value
+        const emailAddress = event.target[9].value
+        const veggieType = event.target[10].value
+
+        newProfile = { 
+            type: "user", 
+            attributes: {
+            name: name,
+            // password: password,
+            age: age,
+            image_url: imageUrl,
+            attracted_to: attractedTo, 
+            occupation: occupation,
+            interests: interests,
+            location: location, 
+            phone_number: phoneNumber,
+            email_address: emailAddress,
+            veggie_type: veggieType 
+            }
+        }
+
+        reqObj = {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(newProfile)
+        }
+
+        fetch('http://localhost:3000/users', reqObj)
+        .then(resp => resp.json())
+        .then(newProfile => {
+            createProfileForm.reset()
+            createProfileForm.style.display = "none"
+            debugger
+            // displaySignedInUser(newProfile)
+        })
+    })
 }
 
 function displaySignedInUser(name){
@@ -80,3 +146,4 @@ function meatClick(){
 }
 
 signIn()
+createProfile()

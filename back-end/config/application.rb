@@ -28,7 +28,7 @@ module BackEnd
         :headers => :any,
         :methods => [:get, :post, :delete, :put, :patch, :options, :head], 
         :max_age => 0
-    end    
+    end 
    end
   end
 end
