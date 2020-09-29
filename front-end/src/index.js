@@ -9,6 +9,7 @@ const createProfileForm = document.querySelector('#create-profile-form')
 
 
 //Need to include password entry
+//function to let user sign-in before seeing profile and matches
 function signIn(){
     navBar.style.display = "none"
     createProfileForm.style.display = "none"
@@ -22,7 +23,7 @@ function signIn(){
             if (array.includes(name)){
                 signInFormContainer.style.display = "none"
                 navBar.style.display = "block"
-                displaySignedInUser(name)
+                showUserAndPotentialMatchProfiles(name)
             } else {
                 alert("Incorrect Name or Password")
             }
@@ -86,23 +87,21 @@ function createProfileFormSubmission(){
             createProfileForm.reset()
             createProfileForm.style.display = "none"
             debugger
-            // displaySignedInUser(newProfile)
+            // showUserAndPotentialMatchProfiles(newProfile.attributes.name)
         })
     })
 }
 
-function displaySignedInUser(name){
-    console.log(name)
-}
-
-// function to display all users
-function showProfiles(){
+//function to display user profile and potential match profiles
+//Used a contiditional statement to place user profile inside userContainer
+//and potential matches inside potentialContainer
+function showUserAndPotentialMatchProfiles(name){
     fetch('http://localhost:3000/users')
     .then(resp => resp.json())
     .then(profiles => {
-        
-        profiles.data.forEach(function(profile){
-            userContainer.innerHTML += 
+    profiles.data.filter(profile => {
+        if (profile.attributes.name !== name) {
+            potentialContainer.innerHTML += 
             `<br>
             <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.attributes.id}>
                 <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
@@ -124,9 +123,38 @@ function showProfiles(){
                 </div>
             </div>
             <br>`
+            } else {
+                userContainer.innerHTML += 
+                `<br>
+                <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.attributes.id}>
+                    <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
+                    <div class="card-body">
+                        <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
+                        <p class="card-text text-center">"${profile.attributes.bio}"</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-center">${profile.attributes.occupation}</li>
+                        <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
+                        <li class="list-group-item text-center">${profile.attributes.interests} & fuckin shit up</li>
+                        <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
+                    </ul>
+                    <div class="card-body text-center">
+                        <button type="button" name="match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
+                    </div>
+                    <div class="card-body text-center">
+                        <button type="button" name="pass-button" class="btn btn-light text-danger btn-lg btn-block">Hard pass on that ass!</button>
+                    </div>
+                </div>
+                <br>`
+            }
         })
     })
 }
+
+
+
+
+
 
 //event listeners for buttons, need to add functionality to both buttons
 function profileButtonsListener(){
@@ -139,6 +167,7 @@ function profileButtonsListener(){
     })
 }
 
+//click for the footer
 function meatClick(){
     meatText.addEventListener('click',function(){
         alert("Meat is MURDER!")
