@@ -1,0 +1,7 @@
+.mr-auto {
+    margin-right: 40px !important;
+}
+.navbar-expand-sm .navbar-collapse {         
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;  
+} 
