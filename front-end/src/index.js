@@ -6,9 +6,9 @@ const header = document.querySelector('#header')
 const meatText = document.querySelector('#meat')
 const createProfileLink = document.querySelector('#create-profile-link')
 const createProfileForm = document.querySelector('#create-profile-form')
-
 const deleteProfileForm = document.querySelector('#delete-me')
-const titleHeader = document.querySelector('#title-header'
+const titleHeader = document.querySelector('#title-header')
+const backBtn = document.querySelector('#back-to-login')
 
 
 //Need to include password entry
@@ -32,6 +32,14 @@ function signIn(){
                 alert("Incorrect Name or Password")
             }
         })
+    })
+}
+
+//allows user to go back to sign-in page
+function backToSignIn(){
+    backBtn.addEventListener('click', function(event){
+        createProfileForm.style.display = "none"
+        signInFormContainer.style.display = "block"
     })
 }
 
@@ -184,3 +192,4 @@ function meatClick(){
 
 signIn()
 createProfile()
+backToSignIn()
