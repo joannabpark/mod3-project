@@ -15,12 +15,13 @@ function signIn(){
         .then(resp => resp.json())
         .then(profiles => {
             const array = profiles.data.map(function(profile){ return profile.attributes.name })
-            // if (any value in the array == name){
+            // if (array.include(name){
             //     formContainer.style.display = "none"
             //     navBar.style.display = "block"
             //     displaySignedInUser(name)
             // }
         })
+        debugger
     }) 
 }
 
