@@ -6,6 +6,7 @@ const header = document.querySelector('#header')
 const meatText = document.querySelector('#meat')
 const createProfileLink = document.querySelector('#create-profile-link')
 const createProfileForm = document.querySelector('#create-profile-form')
+const titleHeader = document.querySelector('#title-header')
 
 
 //Need to include password entry
@@ -22,6 +23,7 @@ function signIn(){
             const array = profiles.data.map(function(profile){ return profile.attributes.name })
             if (array.includes(name)){
                 signInFormContainer.style.display = "none"
+                titleHeader.style.display = 'none'
                 navBar.style.display = "block"
                 showUserAndPotentialMatchProfiles(name)
             } else {
