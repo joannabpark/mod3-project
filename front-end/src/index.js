@@ -7,12 +7,18 @@ const meatText = document.querySelector('#meat')
 const createProfileLink = document.querySelector('#create-profile-link')
 const createProfileFormDiv = document.querySelector('#create-profile-form-div')
 const createProfileForm = document.querySelector('#create-form')
+const deleteProfileForm = document.querySelector('#delete-me')
+const titleHeader = document.querySelector('#title-header')
+const backBtn = document.querySelector('#back-to-login')
+
 
 //Need to include password entry
 //function to let user sign-in before seeing profile and matches
 function signIn(){
     navBar.style.display = "none"
     createProfileForm.style.display = "none"
+    userContainer.style.display = "none"
+    potentialContainer.style.display = "none"
     signInFormContainer.addEventListener('submit', function(event){
         event.preventDefault()
         const name = event.target[0].value
@@ -23,12 +29,22 @@ function signIn(){
             const array = profiles.data.map(function(profile){ return profile.attributes.name })
             if (array.includes(name)){
                 signInFormContainer.style.display = "none"
+                titleHeader.style.display = 'none'
                 navBar.style.display = "block"
                 showUserAndPotentialMatchProfiles(name)
             } else {
                 alert("Incorrect Name or Password")
             }
         })
+    })
+}
+
+//allows user to go back to sign-in page
+function backToSignIn(){
+    backBtn.addEventListener('click', function(event){
+        createProfileForm.style.display = "none"
+        signInFormContainer.style.display = "block"
+        userContainer.style.display = "none"
     })
 }
 
@@ -40,6 +56,10 @@ function createProfile(){
         createProfileForm.style.display = "block"
         createProfileFormSubmission()
     })
+}
+
+function deleteProfile(){
+
 }
 
 function createProfileFormSubmission(){
@@ -85,7 +105,6 @@ function createProfileFormSubmission(){
         fetch('http://localhost:3000/users', reqObj)
         .then(resp => resp.json())
         .then(newProfile => {
-            console.log(newProfile)
             createProfileForm.reset()
             createProfileFormDiv.style.display = "none"
             showUserAndPotentialMatchProfiles(newProfile.data.attributes.name)
@@ -177,3 +196,4 @@ function meatClick(){
 
 signIn()
 createProfile()
+backToSignIn()

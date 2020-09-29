@@ -13,30 +13,34 @@
     <!-- body -->
 
     <body>
-        <h1 class="text-center text-info font-weight-light" id='header'>Veggie 🍑 Delight</h1>
-        <h6 class="text-center">💘 Where Herbivores Find Love💘</h6> 
+      <div id='title-header'>
+      <h1 class="text-center text-info font-weight-light" id='header'>Veggie 🍑 Delight</h1>
+      <h6 class="text-center">💘 Where Herbivores Find Love💘</h6> 
+      </div>
 
     <!-- navbar -->
     <div id='nav-bar'>
         <nav class="navbar navbar-expand-sm navbar-light bg-light">
+          <h1 class="text-center text-info font-weight-light" id='header'>Veggie 🍑 Delight</h1><br>
+          <h6 class="text-center">💘 Where Herbivores Find Love💘</h6> 
             <a class="navbar-brand" href="#"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+              <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav text-right">
+            <div class="collapse navbar-collapse text-right" id="navbarNavDropdown">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Profile
+                      Profile
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="#">Edit Profile</a>
                         <a class="dropdown-item" href="#">Delete Profile</a>
-                        <a class="dropdown-item" href="#">Logout</a>
+                        <a class="dropdown-item" id= "delete-me" href="#">Logout</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Matches</a>
+                <!-- <a class="nav-link" href="#">Matches</a> -->
                 </li>
             </ul>
             </div>
@@ -139,7 +143,8 @@
                 </div>
                 
                 <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+                <button type="submit" class="btn btn-primary" id="back-to-login">Back to Login</button>
+              </form>
         </div>
 
 
