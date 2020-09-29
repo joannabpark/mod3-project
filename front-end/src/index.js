@@ -1,14 +1,33 @@
-function main(){
-    showProfiles()
-    profileButtonsListener()
-    meatClick()
-   
-    // displayPotentials()
-}
+const formContainer = document.querySelector('.form-container')
+const navBar = document.querySelector('#nav-bar')
 const userContainer = document.querySelector('#user-container')
 const potentialContainer = document.querySelector('#potential-matches')
 const header = document.querySelector('#header')
 const meatText = document.querySelector('#meat')
+
+
+function signIn(){
+    navBar.style.display = "none"
+    formContainer.addEventListener('submit', function(event){
+        event.preventDefault()
+        const name = event.target[0].value
+        fetch('http://localhost:3000/users')
+        .then(resp => resp.json())
+        .then(profiles => {
+            const array = profiles.data.map(function(profile){ return profile.attributes.name })
+            // if (any value in the array == name){
+            //     formContainer.style.display = "none"
+            //     navBar.style.display = "block"
+            //     displaySignedInUser(name)
+            // }
+        })
+    }) 
+}
+
+function displaySignedInUser(name){
+    console.log(name)
+}
+
 
 // function to display all users
 function showProfiles(){
@@ -43,7 +62,6 @@ function showProfiles(){
     })
 }
 
-
 //event listeners for buttons, need to add functionality to both buttons
 function profileButtonsListener(){
     userContainer.addEventListener('click', function(event){
@@ -52,9 +70,7 @@ function profileButtonsListener(){
         } else if (event.target.name === "pass-button"){
             console.log("No thanks - they nasty AF")
         }
-        
     })
-
 }
 
 function meatClick(){
@@ -63,4 +79,4 @@ function meatClick(){
     })
 }
 
-main()
+signIn()
