@@ -1,13 +1,14 @@
 function main(){
     showProfiles()
-    
+    profileButtonsListener()
+    meatClick()
+   
     // displayPotentials()
 }
-
 const userContainer = document.querySelector('#user-container')
 const potentialContainer = document.querySelector('#potential-matches')
-
-
+const header = document.querySelector('#header')
+const meatText = document.querySelector('#meat')
 
 // function to display all users
 function showProfiles(){
@@ -17,22 +18,24 @@ function showProfiles(){
         
         profiles.data.forEach(function(profile){
             userContainer.innerHTML += 
-            `<div class="card" style="width: 25rem;">
-                <img src="${profile.attributes.image_url}" class="card-img-top" alt="...">
+            `<br>
+            <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.attributes.id}>
+                <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
                 <div class="card-body">
-                    <h5 class="card-title">${profile.attributes.name}</h5>
-                    <p class="card-text">${profile.attributes.bio}</p>
+                    <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
+                    <p class="card-text text-center">"${profile.attributes.bio}"</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">${profile.attributes.age}</li>
-                    <li class="list-group-item">${profile.attributes.occupation}</li>
-                    <li class="list-group-item">${profile.attributes.attracted_to}</li>
-                    <li class="list-group-item">${profile.attributes.interests}</li>
-                    <li class="list-group-item">${profile.attributes.veggie_type}</li>
+                    <li class="list-group-item text-center">${profile.attributes.occupation}</li>
+                    <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
+                    <li class="list-group-item text-center">${profile.attributes.interests} & fuckin shit up</li>
+                    <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
                 </ul>
-                <div class="card-body">
-                    <a href="#" class="card-link">I want your broccoli</a>
-                    <a href="#" class="card-link">Hard pass on that ass</a>
+                <div class="card-body text-center">
+                    <button type="button" name="match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
+                </div>
+                <div class="card-body text-center">
+                    <button type="button" name="pass-button" class="btn btn-light text-danger btn-lg btn-block">Hard pass on that ass!</button>
                 </div>
             </div>
             <br>`
@@ -41,30 +44,23 @@ function showProfiles(){
 }
 
 
-// function to display carosel on the right - needs refactoring
+//event listeners for buttons, need to add functionality to both buttons
+function profileButtonsListener(){
+    userContainer.addEventListener('click', function(event){
+        if (event.target.name === "match-button"){
+            console.log("Its a match made in heaven")
+        } else if (event.target.name === "pass-button"){
+            console.log("No thanks - they nasty AF")
+        }
+        
+    })
 
-// function displayPotentials(){
-//     potentialContainer.innerHTML =
-//             `<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-//             <div class="carousel-inner">
-//                 <div class="carousel-item active">
-//                 <img src="https://media-exp1.licdn.com/dms/image/C4E03AQHhY1RZEx-PxA/profile-displayphoto-shrink_200_200/0?e=1606953600&v=beta&t=FnBCpg2_FgjlfED6P5DsmHrU6ki7abEYmaS4VhlQHPo" class="d-block w-30" alt="...">
-//                 </div>
-//                 <div class="carousel-item">
-//                 <img src="..." class="d-block w-100" alt="...">
-//                 </div>
-//                 <div class="carousel-item">
-//                 <img src="..." class="d-block w-100" alt="...">
-//                 </div>
-//             </div>
-//             <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-//                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-//                 <span class="sr-only">Previous</span>
-//             </a>
-//             <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-//                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-//                 <span class="sr-only">Next</span>
-//             </a>
-//             </div>`
-// }
+}
+
+function meatClick(){
+    meatText.addEventListener('click',function(){
+        alert("Meat is MURDER!")
+    })
+}
+
 main()
