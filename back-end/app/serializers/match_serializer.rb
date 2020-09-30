@@ -1,5 +1,4 @@
 class MatchSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :created_at
-  belongs_to :user
+  attributes :matcher_id, :matchee_id
 end

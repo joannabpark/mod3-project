@@ -14,6 +14,9 @@ const backBtn = document.querySelector('#back-to-login')
 const logOutBtn = document.querySelector('#logout-button')
 const editBtn = document.querySelector('#edit-button')
 const deleteBtn = document.querySelector('#delete-button')
+const myMatchesBtn = document.querySelector('#match-button')
+const myMatchesDiv = document.querySelector("#my-matches")
+const findMatchesBtn = document.querySelector("#find-match-button")
 
 //Need to include password entry
 //function to let user sign-in before seeing profile and matches
@@ -25,6 +28,7 @@ function signIn(){
     createProfileForm.style.display = "none"
     userContainer.style.display = "none"
     potentialContainer.style.display = "none"
+    myMatchesDiv.style.display = 'none'
     signInFormDiv.addEventListener('submit', function(event){
         event.preventDefault()
         const name = event.target[0].value
@@ -36,6 +40,8 @@ function signIn(){
             if (instance && password === instance.attributes.password){
                 editBtn.setAttribute('data-id', instance.id)
                 deleteBtn.setAttribute('data-id', instance.id)
+                myMatchesBtn.setAttribute('data-id', instance.id)
+                findMatchesBtn.setAttribute('data-id', instance.id)
                 //assign id to all necessary buttons
                 signInFormDiv.style.display = "none"
                 titleHeader.style.display = 'none'
@@ -86,6 +92,7 @@ function editProfile(){
     editBtn.addEventListener('click', function(event){
         userContainer.style.display = "none"
         potentialContainer.style.display = "none"
+        myMatchesDiv.style.display = 'none'
         const userId = event.target.dataset.id
         fetch(`http://localhost:3000/users/${userId}`)
         .then(resp => resp.json())
@@ -215,6 +222,65 @@ function logOut(){
     })
 }
 
+function seeMatches(){
+    
+    myMatchesBtn.addEventListener('click', function(event){
+        const userId = event.target.dataset.id
+        potentialContainer.style.display = 'none'
+        editProfileFormDiv.style.display = "none"
+        fetch('http://localhost:3000/matches/')
+        .then(resp => resp.json())
+        .then(matches => {
+            const matchArray =  matches.data.filter(match => match.attributes.matcher_id == userId)
+            const matcheeIdArray = matchArray.map(match => match.attributes.matchee_id)
+            fetch('http://localhost:3000/users/')
+            .then(resp => resp.json())
+            .then(users => {
+                myMatchesDiv.innerHTML = ""
+                users.data.forEach(user => {
+                    console.log(user.id)
+                    if (matcheeIdArray.includes(parseInt(user.id))){
+                        myMatchesDiv.style.display = 'block'
+                        myMatchesDiv.innerHTML += 
+                        `
+                        <br>
+                        <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${user.id}>
+                            <img src="${user.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
+                            <div class="card-body">
+                                <h5 class="card-title font-weight-bold text-center">${user.attributes.name}, ${user.attributes.age}</h5>
+                                <p class="card-text text-center">"${user.attributes.bio}"</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item text-center">${user.attributes.occupation}</li>
+                                <li class="list-group-item text-center">${user.attributes.attracted_to}</li>
+                                <li class="list-group-item text-center">${user.attributes.interests}</li>
+                                <li class="list-group-item text-center">${user.attributes.veggie_type}</li>
+                                <li class="list-group-item text-center">${user.attributes.location}</li>
+                                <li class="list-group-item text-center">${user.attributes.phone_number}</li>
+                                <li class="list-group-item text-center">${user.attributes.email_address}</li>
+                            </ul>
+                        </div>
+                        <br>`
+                        
+                    }
+                })
+            })
+        })
+    })
+}
+
+function backToPotentialMatches(){
+    findMatchesBtn.addEventListener('click', function(event){
+        const userId = event.target.dataset.id
+        showUserAndPotentialMatchProfiles(userId)
+    })
+}
+
+//Add function for find potential matches button that 
+    //event listener on click 
+        //displays userContainer
+        //displays potential container 
+
 
 function createProfileFormSubmission(){
     createProfileFormDiv.addEventListener('submit', function(event){
@@ -272,10 +338,13 @@ function createProfileFormSubmission(){
 function showUserAndPotentialMatchProfiles(id){
     navBar.style.display = "block"
     titleHeader.style.display = "none"
+    myMatchesDiv.style.display = 'none'
+    editProfileFormDiv.style.display = "none"
     fetch('http://localhost:3000/users')
     .then(resp => resp.json())
     .then(profiles => {
-    profiles.data.filter(profile => {
+        potentialContainer.innerHTML = ""
+        profiles.data.filter(profile => {
         if (profile.id === id) {
             userContainer.innerHTML = 
                 `<br>
@@ -310,7 +379,7 @@ function showUserAndPotentialMatchProfiles(id){
                         <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
                     </ul>
                     <div class="card-body text-center">
-                        <button type="button" name="match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
+                        <button type="button" name="make-match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
                     </div>
                     <div class="card-body text-center">
                         <button type="button" name="pass-button" class="btn btn-light text-danger btn-lg btn-block">Hard pass on that ass!</button>
@@ -330,8 +399,8 @@ function showUserAndPotentialMatchProfiles(id){
 
 //event listeners for buttons, need to add functionality to both buttons
 function profileButtonsListener(){
-    userContainer.addEventListener('click', function(event){
-        if (event.target.name === "match-button"){
+    potentialContainer.addEventListener('click', function(event){
+        if (event.target.name === "make-match-button"){
             console.log("Its a match made in heaven")
         } else if (event.target.name === "pass-button"){
             console.log("No thanks - they nasty AF")
@@ -348,7 +417,10 @@ function meatClick(){
 
 signIn()
 createProfile()
+seeMatches()
+backToPotentialMatches()
 editProfile()
 deleteProfile()
 logOut()
+profileButtonsListener()
 // backToSignIn()
