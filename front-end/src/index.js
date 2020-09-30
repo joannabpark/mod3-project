@@ -32,10 +32,7 @@ function signIn(){
         fetch('http://localhost:3000/users')
         .then(resp => resp.json())
         .then(profiles => {
-            // const array = profiles.data.map(function(profile){ return profile.attributes.name })
             const instance = profiles.data.find(function(profile){ return profile.attributes.name === name })
-            //if the name matches a name in the db, return the id
-            // if (array.includes(name)){
             if (instance && password === instance.attributes.password){
                 editBtn.setAttribute('data-id', instance.id)
                 deleteBtn.setAttribute('data-id', instance.id)
@@ -44,7 +41,7 @@ function signIn(){
                 titleHeader.style.display = 'none'
                 navBar.style.display = "block"
                 signInForm.reset()
-                showUserAndPotentialMatchProfiles(name)
+                showUserAndPotentialMatchProfiles(instance.id)
             } else {
                 alert("Incorrect Name or Password")
             }
@@ -204,7 +201,7 @@ function editProfile(){
             .then(resp => resp.json())
             .then(newProfile => {
                 editProfileFormDiv.style.display = "none"
-                showUserAndPotentialMatchProfiles(newProfile.data.attributes.name)
+                showUserAndPotentialMatchProfiles(newProfile.data.id)
             })    
         })   
         
@@ -272,40 +269,17 @@ function createProfileFormSubmission(){
 //function to display user profile and potential match profiles
 //Used a contiditional statement to place user profile inside userContainer
 //and potential matches inside potentialContainer
-function showUserAndPotentialMatchProfiles(name){
+function showUserAndPotentialMatchProfiles(id){
     navBar.style.display = "block"
     titleHeader.style.display = "none"
     fetch('http://localhost:3000/users')
     .then(resp => resp.json())
     .then(profiles => {
     profiles.data.filter(profile => {
-        if (profile.attributes.name !== name) {
-            potentialContainer.innerHTML += 
-            `<br>
-            <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.attributes.id}>
-                <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
-                <div class="card-body">
-                    <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
-                    <p class="card-text text-center">"${profile.attributes.bio}"</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-center">${profile.attributes.occupation}</li>
-                    <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
-                    <li class="list-group-item text-center">${profile.attributes.interests} & fuckin shit up</li>
-                    <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
-                </ul>
-                <div class="card-body text-center">
-                    <button type="button" name="match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
-                </div>
-                <div class="card-body text-center">
-                    <button type="button" name="pass-button" class="btn btn-light text-danger btn-lg btn-block">Hard pass on that ass!</button>
-                </div>
-            </div>
-            <br>`
-            } else {
-                userContainer.innerHTML += 
+        if (profile.id === id) {
+            userContainer.innerHTML = 
                 `<br>
-                <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.attributes.id}>
+                <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
                     <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
                     <div class="card-body">
                         <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
@@ -314,7 +288,7 @@ function showUserAndPotentialMatchProfiles(name){
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item text-center">${profile.attributes.occupation}</li>
                         <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
-                        <li class="list-group-item text-center">${profile.attributes.interests} & fuckin shit up</li>
+                        <li class="list-group-item text-center">${profile.attributes.interests}</li>
                         <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
                     </ul>
                     <div class="card-body text-center">
@@ -325,11 +299,34 @@ function showUserAndPotentialMatchProfiles(name){
                     </div>
                 </div>
                 <br>`
+                userContainer.style.display = "block"
+            } else {
+                potentialContainer.innerHTML += 
+                `<br>
+                <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
+                    <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
+                    <div class="card-body">
+                        <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
+                        <p class="card-text text-center">"${profile.attributes.bio}"</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-center">${profile.attributes.occupation}</li>
+                        <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
+                        <li class="list-group-item text-center">${profile.attributes.interests}</li>
+                        <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
+                    </ul>
+                    <div class="card-body text-center">
+                        <button type="button" name="match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
+                    </div>
+                    <div class="card-body text-center">
+                        <button type="button" name="pass-button" class="btn btn-light text-danger btn-lg btn-block">Hard pass on that ass!</button>
+                    </div>
+                </div>
+                <br>`
+                potentialContainer.style.display = "block"
             }
         })
     })
-    userContainer.style.display = "block"
-    potentialContainer.style.display = "block"
 }
 
 
