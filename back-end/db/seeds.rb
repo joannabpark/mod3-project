@@ -11,6 +11,7 @@ User.destroy_all
 Match.destroy_all
 
 puts "Starting Seed"
+puts "Seeding Users"
 
 User.create(name:"JoAnna", age:"29", image_url:"https://media-exp1.licdn.com/dms/image/C4E03AQHhY1RZEx-PxA/profile-displayphoto-shrink_200_200/0?e=1606953600&v=beta&t=FnBCpg2_FgjlfED6P5DsmHrU6ki7abEYmaS4VhlQHPo", attracted_to:"cats", occupation:"Software Engineering Student", interests:"Yoga, running, horror movies", location: "Chicago", phone_number:"123-456-7890", email_address:"jojo@gmail.com", veggie_type:"Lacto-ovo", bio: "I play hard. I play fast.", password: "123")
 User.create(name:"Bob", age:"30", image_url:"https://media-exp1.licdn.com/dms/image/C4E03AQHhY1RZEx-PxA/profile-displayphoto-shrink_200_200/0?e=1606953600&v=beta&t=FnBCpg2_FgjlfED6P5DsmHrU6ki7abEYmaS4VhlQHPo", attracted_to:"female", occupation:"Plumber", interests:"Netflix", location: "Chicago", phone_number:"123-456-7890", email_address:"bob@gmail.com", veggie_type:"Lacto-ovo", bio: "I never gave a fuck", password: "123")
@@ -24,4 +25,12 @@ User.create(name:"Josue", age:"22", image_url:"data:image/jpeg;base64,/9j/4AAQSk
 10.times do 
     User.create(name: Faker::Name.name, age: Faker::Number.between(from: 18, to: 100), image_url: Faker::LoremFlickr.image, attracted_to: Faker::Gender.binary_type, occupation: Faker::Job.title, interests: "salads", location: Faker::Address.city, phone_number: Faker::PhoneNumber.cell_phone, email_address: Faker::Internet.free_email, veggie_type: Faker::Food.vegetables, bio:Faker::Quote.most_interesting_man_in_the_world, password: "123")
 end 
+
+puts "Seeding Matches"
+
+Match.create(matcher_id: User.first.id, matchee_id: User.second.id)
+Match.create(matcher_id: User.first.id, matchee_id: User.fourth.id)
+Match.create(matcher_id: User.third.id, matchee_id: User.first.id)
+Match.create(matcher_id: User.third.id, matchee_id: User.fourth.id)
+
 puts "Complete!"
