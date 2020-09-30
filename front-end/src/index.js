@@ -291,12 +291,6 @@ function showUserAndPotentialMatchProfiles(id){
                         <li class="list-group-item text-center">${profile.attributes.interests}</li>
                         <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
                     </ul>
-                    <div class="card-body text-center">
-                        <button type="button" name="match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
-                    </div>
-                    <div class="card-body text-center">
-                        <button type="button" name="pass-button" class="btn btn-light text-danger btn-lg btn-block">Hard pass on that ass!</button>
-                    </div>
                 </div>
                 <br>`
                 userContainer.style.display = "block"
