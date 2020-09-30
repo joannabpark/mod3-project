@@ -231,15 +231,19 @@ function seeMatches(){
         fetch('http://localhost:3000/matches/')
         .then(resp => resp.json())
         .then(matches => {
-            const matchArray =  matches.data.filter(match => match.attributes.matcher_id == userId)
-            const matcheeIdArray = matchArray.map(match => match.attributes.matchee_id)
+            //matcher logic
+            const whereUserIsMatcherArray =  matches.data.filter(match => match.attributes.matcher_id == userId)
+            const usersMatcheesIdsArray = whereUserIsMatcherArray.map(match => match.attributes.matchee_id)
+            //matchee logic
+            const whereUserIsMatcheeArray =  matches.data.filter(match => match.attributes.matchee_id == userId)
+            const usersMatchersIdsArray = whereUserIsMatcheeArray.map(match => match.attributes.matcher_id)
+           
             fetch('http://localhost:3000/users/')
             .then(resp => resp.json())
             .then(users => {
                 myMatchesDiv.innerHTML = ""
                 users.data.forEach(user => {
-                    console.log(user.id)
-                    if (matcheeIdArray.includes(parseInt(user.id))){
+                    if (usersMatcheesIdsArray.includes(parseInt(user.id))){
                         myMatchesDiv.style.display = 'block'
                         myMatchesDiv.innerHTML += 
                         `
@@ -261,8 +265,30 @@ function seeMatches(){
                             </ul>
                         </div>
                         <br>`
-                        
                     }
+                    if (usersMatchersIdsArray.includes(parseInt(user.id))){
+                        myMatchesDiv.style.display = 'block'
+                        myMatchesDiv.innerHTML += 
+                        `
+                        <br>
+                        <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${user.id}>
+                            <img src="${user.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
+                            <div class="card-body">
+                                <h5 class="card-title font-weight-bold text-center">${user.attributes.name}, ${user.attributes.age}</h5>
+                                <p class="card-text text-center">"${user.attributes.bio}"</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item text-center">${user.attributes.occupation}</li>
+                                <li class="list-group-item text-center">${user.attributes.attracted_to}</li>
+                                <li class="list-group-item text-center">${user.attributes.interests}</li>
+                                <li class="list-group-item text-center">${user.attributes.veggie_type}</li>
+                                <li class="list-group-item text-center">${user.attributes.location}</li>
+                                <li class="list-group-item text-center">${user.attributes.phone_number}</li>
+                                <li class="list-group-item text-center">${user.attributes.email_address}</li>
+                            </ul>
+                        </div>
+                        <br>`
+                     }
                 })
             })
         })
@@ -275,11 +301,6 @@ function backToPotentialMatches(){
         showUserAndPotentialMatchProfiles(userId)
     })
 }
-
-//Add function for find potential matches button that 
-    //event listener on click 
-        //displays userContainer
-        //displays potential container 
 
 
 function createProfileFormSubmission(){
@@ -333,62 +354,70 @@ function createProfileFormSubmission(){
 }
 
 //function to display user profile and potential match profiles
-//Used a contiditional statement to place user profile inside userContainer
-//and potential matches inside potentialContainer
 function showUserAndPotentialMatchProfiles(id){
     navBar.style.display = "block"
     titleHeader.style.display = "none"
     myMatchesDiv.style.display = 'none'
     editProfileFormDiv.style.display = "none"
-    fetch('http://localhost:3000/users')
+    fetch('http://localhost:3000/matches')
     .then(resp => resp.json())
-    .then(profiles => {
-        potentialContainer.innerHTML = ""
-        profiles.data.filter(profile => {
-        if (profile.id === id) {
-            userContainer.innerHTML = 
-                `<br>
-                <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
-                    <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
-                    <div class="card-body">
-                        <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
-                        <p class="card-text text-center">"${profile.attributes.bio}"</p>
+    .then(matches => {
+        const matcherArray = matches.data.map(match => match.attributes.matcher_id)
+        const matcheeArray = matches.data.map(match => match.attributes.matchee_id)
+        const totalArray = matcherArray.concat(matcheeArray)
+        fetch('http://localhost:3000/users')
+        .then(resp => resp.json())
+        .then(profiles => {
+            potentialContainer.innerHTML = ""
+            // const noMatchArray = profiles.data.filter(totalArray.includes(profile.id))
+            profiles.data.filter(profile => {
+            if (profile.id === id) {
+                userContainer.innerHTML = 
+                    `<br>
+                    <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
+                        <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
+                            <p class="card-text text-center">"${profile.attributes.bio}"</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-center">${profile.attributes.occupation}</li>
+                            <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
+                            <li class="list-group-item text-center">${profile.attributes.interests}</li>
+                            <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
+                        </ul>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item text-center">${profile.attributes.occupation}</li>
-                        <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
-                        <li class="list-group-item text-center">${profile.attributes.interests}</li>
-                        <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
-                    </ul>
-                </div>
-                <br>`
-                userContainer.style.display = "block"
-            } else {
-                potentialContainer.innerHTML += 
-                `<br>
-                <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
-                    <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
-                    <div class="card-body">
-                        <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
-                        <p class="card-text text-center">"${profile.attributes.bio}"</p>
+                    <br>`
+                    userContainer.style.display = "block"
+                } else {
+                    // console.log(totalArray.some((element) => element !== parseInt(profile.id)))
+                    potentialContainer.innerHTML += 
+                    `<br>
+                    <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
+                        <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
+                            <p class="card-text text-center">"${profile.attributes.bio}"</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-center">${profile.attributes.occupation}</li>
+                            <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
+                            <li class="list-group-item text-center">${profile.attributes.interests}</li>
+                            <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
+                        </ul>
+                        <div class="card-body text-center">
+                            <button type="button" name="make-match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
+                        </div>
+                        <div class="card-body text-center">
+                            <button type="button" name="pass-button" class="btn btn-light text-danger btn-lg btn-block">Hard pass on that ass!</button>
+                        </div>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item text-center">${profile.attributes.occupation}</li>
-                        <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
-                        <li class="list-group-item text-center">${profile.attributes.interests}</li>
-                        <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
-                    </ul>
-                    <div class="card-body text-center">
-                        <button type="button" name="make-match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
-                    </div>
-                    <div class="card-body text-center">
-                        <button type="button" name="pass-button" class="btn btn-light text-danger btn-lg btn-block">Hard pass on that ass!</button>
-                    </div>
-                </div>
-                <br>`
-                potentialContainer.style.display = "block"
-            }
-        })
+                    <br>`
+                    potentialContainer.style.display = "block"
+                    
+                }
+            })
+        })  
     })
 }
 

@@ -30,6 +30,7 @@ puts "Seeding Matches"
 
 Match.create(matcher_id: User.first.id, matchee_id: User.second.id)
 Match.create(matcher_id: User.first.id, matchee_id: User.fourth.id)
+Match.create(matcher_id: User.third.id, matchee_id: User.first.id)
 Match.create(matcher_id: User.third.id, matchee_id: User.fourth.id)
 
 puts "Complete!"
