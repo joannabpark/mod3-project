@@ -28,10 +28,23 @@ text-align: center;
     margin-left: 10px;
 } */
 
-.sign-in{
+#sign-in-form-div{
+    width: 63%;
+    padding-left: 37%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+#create-profile-form-div{
     width: 63%;
     padding-left: 40%;
     padding-top: 5%;
     padding-bottom: 5%;
 }
 
+#edit-profile-form-div{
+    width: 63%;
+    padding-left: 40%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
