@@ -1,5 +1,5 @@
 const signInFormDiv = document.querySelector('#sign-in-form-div')
-const signInForm = document.querySelector('#sign-in-form') //check if i need to change to "form-signin"
+const signInForm = document.querySelector('#sign-in-form')
 const navBar = document.querySelector('#nav-bar')
 const userContainer = document.querySelector('#user-container')
 const potentialContainer = document.querySelector('#potential-matches')
@@ -21,8 +21,6 @@ const btnDiv = document.querySelector('#button-div')
 const broccoliBtn = document.querySelector('#make-match-button')
 const passBtn = document.querySelector('#pass-button')
 
-//Need to include password entry
-//function to let user sign-in before seeing profile and matches
 function signIn(){
     titleHeader.style.display = "block"
     signInFormDiv.style.display = "block"
@@ -47,7 +45,6 @@ function signIn(){
                 myMatchesBtn.setAttribute('data-id', instance.id)
                 findMatchesBtn.setAttribute('data-id', instance.id)
                 headerLogo.setAttribute('data-id', instance.id)
-                //assign id to all necessary buttons
                 signInFormDiv.style.display = "none"
                 titleHeader.style.display = 'none'
                 navBar.style.display = "block"
@@ -60,15 +57,6 @@ function signIn(){
         })
     })
 }
-
-// allows user to go back to sign-in page
-// function backToSignIn(){
-//     backBtn.addEventListener('click', function(event){
-//         createProfileForm.style.display = "none"
-//         signInFormDiv.style.display = "block"
-//         userContainer.style.display = "none"
-//     })
-// }
 
 function createProfile(){
     navBar.style.display = "none"
@@ -185,7 +173,6 @@ function editProfile(){
             const veggieType = event.target[10].value
             const bio = event.target[11].value
             const userId = event.target.dataset.id
-    
             newProfile = {
                 name: name,
                 password: password,
@@ -200,7 +187,6 @@ function editProfile(){
                 veggie_type: veggieType, 
                 bio: bio
             }
-    
             reqObj = {
                 method: 'PATCH',
                 headers: {
@@ -208,7 +194,6 @@ function editProfile(){
                 },
                 body: JSON.stringify(newProfile)
             }
-    
             fetch(`http://localhost:3000/users/${userId}`, reqObj)
             .then(resp => resp.json())
             .then(newProfile => {
@@ -229,7 +214,6 @@ function logOut(){
 
 function seeMatches(){
     myMatchesBtn.addEventListener('click', function(event){
-        console.log("hello")
         const userId = event.target.dataset.id
         potentialContainer.style.display = 'none'
         editProfileFormDiv.style.display = "none"
@@ -238,13 +222,10 @@ function seeMatches(){
         fetch('http://localhost:3000/matches/')
         .then(resp => resp.json())
         .then(matches => {
-            //matcher logic
             const whereUserIsMatcherArray =  matches.data.filter(match => match.attributes.matcher_id == userId)
             const usersMatcheesIdsArray = whereUserIsMatcherArray.map(match => match.attributes.matchee_id)
-            //matchee logic
             const whereUserIsMatcheeArray =  matches.data.filter(match => match.attributes.matchee_id == userId)
             const usersMatchersIdsArray = whereUserIsMatcheeArray.map(match => match.attributes.matcher_id)
-           
             fetch('http://localhost:3000/users/')
             .then(resp => resp.json())
             .then(users => {
@@ -325,8 +306,6 @@ function createProfileFormSubmission(){
         const emailAddress = event.target[9].value
         const veggieType = event.target[10].value
         const bio = event.target[11].value
-
-
         newProfile = {
             name: name,
             password: password,
@@ -341,7 +320,6 @@ function createProfileFormSubmission(){
             veggie_type: veggieType, 
             bio: bio
         }
-
         reqObj = {
             method: 'POST',
             headers: {
@@ -349,7 +327,6 @@ function createProfileFormSubmission(){
             },
             body: JSON.stringify(newProfile)
         }
-
         fetch('http://localhost:3000/users', reqObj)
         .then(resp => resp.json())
         .then(newProfile => {
@@ -362,7 +339,7 @@ function createProfileFormSubmission(){
 
 let potentialMates = []
 let unmatchedMates =[]
-//function to display user profile and potential match profiles
+
 function showUserAndPotentialMatchProfiles(id){
     navBar.style.display = "block"
     titleHeader.style.display = "none"
@@ -401,34 +378,6 @@ function showUserAndPotentialMatchProfiles(id){
                     <br>`
                     userContainer.style.display = "block"
                 } 
-                // else {
-                    
-                    // potentialContainer.innerHTML = 
-                    // `<br>
-                    
-                    //     <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
-                    //         <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
-                    //         <div class="card-body">
-                    //             <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
-                    //             <p class="card-text text-center">"${profile.attributes.bio}"</p>
-                    //         </div>
-                    //         <ul class="list-group list-group-flush">
-                    //             <li class="list-group-item text-center">${profile.attributes.occupation}</li>
-                    //             <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
-                    //             <li class="list-group-item text-center">${profile.attributes.interests}</li>
-                    //             <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
-                    //         </ul>
-                    //         <div class="card-body text-center">
-                    //             <button type="button" name="make-match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
-                    //         </div>
-                    //         <div class="card-body text-center">
-                    //             <button type="button" name="pass-button" class="btn btn-light text-danger btn-lg btn-block">Hard pass on that ass!</button>
-                    //         </div>
-                    //     </div>
-                    
-                    // <br>`
-                    // potentialContainer.style.display = "block"
-                    
             })
             selectCurrentPotential()
         })  
@@ -438,24 +387,33 @@ function showUserAndPotentialMatchProfiles(id){
 
 function renderPotential(){
     const profile = potentialMates[0]
-    potentialContainer.innerHTML = 
-        `<br>
-        
-            <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
-                <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
-                <div class="card-body">
-                    <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
-                    <p class="card-text text-center">"${profile.attributes.bio}"</p>
+        if (profile){
+        potentialContainer.innerHTML = 
+            `<br>
+            
+                <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
+                    <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
+                    <div class="card-body">
+                        <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
+                        <p class="card-text text-center">"${profile.attributes.bio}"</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-center">${profile.attributes.occupation}</li>
+                        <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
+                        <li class="list-group-item text-center">${profile.attributes.interests}</li>
+                        <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
+                    </ul>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-center">${profile.attributes.occupation}</li>
-                    <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
-                    <li class="list-group-item text-center">${profile.attributes.interests}</li>
-                    <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
-                </ul>
+            
+            <br>`
+        } else { 
+            potentialContainer.innerHTML = `<br><br><br><br><br><br><br><br><br><br><div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card">
+            <div class="card-body">
+                <h1 class="card-title font-weight-bold text-center">No more veggies to munch on right now 😢.</h1>
             </div>
-        
-        <br>`
+        </div>`
+        btnDiv.style.display = 'none'
+        }
         potentialContainer.style.display = "block"
         broccoliBtn.setAttribute('data-id',`${profile.id}`)
         passBtn.setAttribute('data-id',`${profile.id}`)
@@ -465,6 +423,7 @@ function selectCurrentPotential(){
         renderPotential()
         btnDiv.addEventListener('click', function(event){
             if (event.target.id === "make-match-button"){
+                biteSoundEffect()
                 const matcheeId = parseInt(event.target.dataset.id)
                 const matcherId = parseInt(event.target.parentNode.parentNode.parentNode.parentNode.firstElementChild.firstElementChild.children[1].dataset.id)
                 const newMatch = {
@@ -488,14 +447,11 @@ function selectCurrentPotential(){
                 //NEED TO FIGURE OUT HOW TO REMOVE POTENTIAL MATCHES THAT ARE ALREADY MATCHED
             }
             else if(event.target.id === "pass-button"){
+                squishSoundEffect()
                 potentialMates.shift()
-                debugger
                 renderPotential()
             }
         })
-        //add event listener to the buttons
-        //conditional statement made if they select yes or no, make patch request if they match
-        //get rid of current card and get the next card and render the next card
 }
 
 function headerClickEvent(){
@@ -505,9 +461,6 @@ function headerClickEvent(){
     })
 }
 
-
-
-//event listeners for buttons, need to add functionality to both buttons
 function profileButtonsListener(){
     potentialContainer.addEventListener('click', function(event){
         if (event.target.name === "make-match-button"){
@@ -518,12 +471,22 @@ function profileButtonsListener(){
     })
 }
 
-//click for the footer
 function meatClick(){
     meatText.addEventListener('click',function(){
         alert("Meat is MURDER!")
     })
 }
+
+function biteSoundEffect(){
+    let audio = new Audio("bite.wav");
+    audio.play();
+}
+
+function squishSoundEffect(){
+    let audio = new Audio("squish.mp4");
+    audio.play();
+}
+
 
 signIn()
 createProfile()
@@ -535,4 +498,3 @@ deleteProfile()
 logOut()
 profileButtonsListener()
 meatClick()
-// backToSignIn()
