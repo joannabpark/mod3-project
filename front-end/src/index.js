@@ -1,5 +1,5 @@
 const signInFormDiv = document.querySelector('#sign-in-form-div')
-const signInForm = document.querySelector('#sign-in-form')
+const signInForm = document.querySelector('#sign-in-form') //check if i need to change to "form-signin"
 const navBar = document.querySelector('#nav-bar')
 const userContainer = document.querySelector('#user-container')
 const potentialContainer = document.querySelector('#potential-matches')
