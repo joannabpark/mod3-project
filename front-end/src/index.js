@@ -10,7 +10,7 @@ const createProfileFormDiv = document.querySelector('#create-profile-form-div')
 const createProfileForm = document.querySelector('#create-form')
 const editProfileFormDiv = document.querySelector('#edit-profile-form-div')
 const titleHeader = document.querySelector('#title-header')
-const backBtn = document.querySelector('#back-to-login')
+const backBtn = document.querySelector('#go-back-btn')
 const logOutBtn = document.querySelector('#logout-button')
 const editBtn = document.querySelector('#edit-button')
 const deleteBtn = document.querySelector('#delete-button')
@@ -23,8 +23,10 @@ const passBtn = document.querySelector('#pass-button')
 
 function signIn(){
     titleHeader.style.display = "block"
+    backBtn.style.display = "none"
     signInFormDiv.style.display = "block"
     editProfileFormDiv.style.display = "none"
+    createProfileFormDiv.style.display = "none"
     navBar.style.display = "none"
     createProfileForm.style.display = "none"
     userContainer.style.display = "none"
@@ -59,9 +61,8 @@ function signIn(){
 }
 
 function createProfile(){
-    navBar.style.display = "none"
-    createProfileForm.style.display = "none"
     createProfileLink.addEventListener('click', function(event){
+        backBtn.style.display = "block"
         signInFormDiv.style.display = "none"
         createProfileForm.style.display = "block"
         createProfileFormSubmission()
@@ -205,6 +206,11 @@ function editProfile(){
     })
 }
 
+function backToSignIn(){
+    backBtn.addEventListener('click',function(event){
+        signIn()
+    })
+}
 
 function logOut(){
     logOutBtn.addEventListener('click',function(event){
@@ -341,6 +347,7 @@ let potentialMates = []
 let unmatchedMates =[]
 
 function showUserAndPotentialMatchProfiles(id){
+    createProfileFormDiv.style.display = "none"
     navBar.style.display = "block"
     titleHeader.style.display = "none"
     myMatchesDiv.style.display = 'none'
@@ -489,6 +496,7 @@ function squishSoundEffect(){
 
 
 signIn()
+backToSignIn()
 createProfile()
 seeMatches()
 backToPotentialMatches()
