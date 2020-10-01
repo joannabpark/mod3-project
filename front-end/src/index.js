@@ -83,7 +83,6 @@ function createProfile(){
 function deleteProfile(){
     deleteBtn.addEventListener('click', function(event){
         const userId = event.target.dataset.id
-        debugger
         fetch(`http://localhost:3000/users/${userId}`, { method: 'DELETE'})
         .then(resp => resp.json())
         .then(data => {
@@ -113,7 +112,7 @@ function editProfile(){
 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" value="${profile.data.attributes.password}">
+                    <input type="password" class="form-control" value="">
                 </div>
 
                 <div class="form-group">
@@ -229,8 +228,8 @@ function logOut(){
 }
 
 function seeMatches(){
-    
     myMatchesBtn.addEventListener('click', function(event){
+        console.log("hello")
         const userId = event.target.dataset.id
         potentialContainer.style.display = 'none'
         editProfileFormDiv.style.display = "none"
@@ -362,6 +361,7 @@ function createProfileFormSubmission(){
 }
 
 let potentialMates = []
+let unmatchedMates =[]
 //function to display user profile and potential match profiles
 function showUserAndPotentialMatchProfiles(id){
     navBar.style.display = "block"
@@ -375,12 +375,24 @@ function showUserAndPotentialMatchProfiles(id){
         const matcherArray = matches.data.map(match => match.attributes.matcher_id)
         const matcheeArray = matches.data.map(match => match.attributes.matchee_id)
         const totalArray = matcherArray.concat(matcheeArray)
+        const uniqArray = [...new Set(totalArray)]
+        // debugger
         fetch('http://localhost:3000/users')
         .then(resp => resp.json())
         .then(profiles => {
             potentialContainer.innerHTML = ""
             // const noMatchArray = profiles.data.filter(totalArray.includes(profile.id))
             potentialMates = profiles.data.filter(profile => profile.id !== id)
+            potentialMates.forEach(mate => {
+                // if mate.id matches any value in uniqArray, remove mate from potentialMates
+                if (uniqArray.find(element => element == mate.id)){
+                    console.log(mate)
+                    //unmatchedMates = potentialMates.filter(object => object.id !== mate.id)
+                    // potentialMates.shift()
+                } else {
+                    unmatchedMates.push(mate)
+                }
+            })
             profiles.data.filter(profile => {
             if (profile.id === id) {
                 userContainer.innerHTML = 
@@ -400,7 +412,8 @@ function showUserAndPotentialMatchProfiles(id){
                     </div>
                     <br>`
                     userContainer.style.display = "block"
-                } else {
+                } 
+                // else {
                     
                     // potentialContainer.innerHTML = 
                     // `<br>
@@ -428,15 +441,15 @@ function showUserAndPotentialMatchProfiles(id){
                     // <br>`
                     // potentialContainer.style.display = "block"
                     
-                }
             })
             selectCurrentPotential()
         })  
     })
 }
 
-function selectCurrentPotential(){
-    const profile = potentialMates[0]
+
+function renderPotential(){
+    const profile = unmatchedMates[0]
     potentialContainer.innerHTML = 
         `<br>
         
@@ -458,6 +471,10 @@ function selectCurrentPotential(){
         potentialContainer.style.display = "block"
         broccoliBtn.setAttribute('data-id',`${profile.id}`)
         passBtn.setAttribute('data-id',`${profile.id}`)
+}
+
+function selectCurrentPotential(){
+        renderPotential()
         btnDiv.addEventListener('click', function(event){
             if (event.target.id === "make-match-button"){
                 const matcheeId = parseInt(event.target.dataset.id)
@@ -466,6 +483,7 @@ function selectCurrentPotential(){
                     matcher_id: matcherId,
                     matchee_id: matcheeId
                 }
+                console.log(newMatch)
                 const reqObj = {
                     method: 'POST',
                     headers: {
@@ -478,13 +496,13 @@ function selectCurrentPotential(){
                 .then(match => {
                     console.log(match)
                 })
-                potentialMates.shift()
-                selectCurrentPotential()
+                unmatchedMates.shift()
+                renderPotential()
                 //NEED TO FIGURE OUT HOW TO REMOVE POTENTIAL MATCHES THAT ARE ALREADY MATCHED
             }
             else if(event.target.id === "pass-button"){
-                potentialMates.shift()
-                selectCurrentPotential()
+                unmatchedMates.shift()
+                renderPotential()
             }
         })
         //add event listener to the buttons
