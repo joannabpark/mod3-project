@@ -360,6 +360,7 @@ let potentialMates = []
 let unmatchedMates =[]
 //function to display user profile and potential match profiles
 function showUserAndPotentialMatchProfiles(id){
+    createProfileFormDiv.style.display = "none"
     navBar.style.display = "block"
     titleHeader.style.display = "none"
     myMatchesDiv.style.display = 'none'
