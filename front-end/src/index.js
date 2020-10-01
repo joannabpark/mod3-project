@@ -61,7 +61,7 @@ function signIn(){
     })
 }
 
-//allows user to go back to sign-in page
+// allows user to go back to sign-in page
 // function backToSignIn(){
 //     backBtn.addEventListener('click', function(event){
 //         createProfileForm.style.display = "none"
@@ -372,27 +372,15 @@ function showUserAndPotentialMatchProfiles(id){
     fetch('http://localhost:3000/matches')
     .then(resp => resp.json())
     .then(matches => {
-        const matcherArray = matches.data.map(match => match.attributes.matcher_id)
-        const matcheeArray = matches.data.map(match => match.attributes.matchee_id)
-        const totalArray = matcherArray.concat(matcheeArray)
-        const uniqArray = [...new Set(totalArray)]
-        // debugger
+        const matchers = matches.data.filter(function(match){ return id == match.attributes.matcher_id })
+        const matcheeIdArray = matchers.map(a => a.attributes.matchee_id)           
+        const matchees = matches.data.filter(function(match){ return id == match.attributes.matchee_id})
+        const matcherIdArray = matchees.map(a => a.attributes.matcher_id)
         fetch('http://localhost:3000/users')
         .then(resp => resp.json())
         .then(profiles => {
             potentialContainer.innerHTML = ""
-            // const noMatchArray = profiles.data.filter(totalArray.includes(profile.id))
-            potentialMates = profiles.data.filter(profile => profile.id !== id)
-            potentialMates.forEach(mate => {
-                // if mate.id matches any value in uniqArray, remove mate from potentialMates
-                if (uniqArray.find(element => element == mate.id)){
-                    console.log(mate)
-                    //unmatchedMates = potentialMates.filter(object => object.id !== mate.id)
-                    // potentialMates.shift()
-                } else {
-                    unmatchedMates.push(mate)
-                }
-            })
+            potentialMates = profiles.data.filter(profile => (profile.id !== id) && !(matcherIdArray.includes(parseInt(profile.id))) && !(matcheeIdArray.includes(parseInt(profile.id))))
             profiles.data.filter(profile => {
             if (profile.id === id) {
                 userContainer.innerHTML = 
@@ -449,7 +437,7 @@ function showUserAndPotentialMatchProfiles(id){
 
 
 function renderPotential(){
-    const profile = unmatchedMates[0]
+    const profile = potentialMates[0]
     potentialContainer.innerHTML = 
         `<br>
         
@@ -483,7 +471,6 @@ function selectCurrentPotential(){
                     matcher_id: matcherId,
                     matchee_id: matcheeId
                 }
-                console.log(newMatch)
                 const reqObj = {
                     method: 'POST',
                     headers: {
@@ -496,12 +483,13 @@ function selectCurrentPotential(){
                 .then(match => {
                     console.log(match)
                 })
-                unmatchedMates.shift()
+                potentialMates.shift()
                 renderPotential()
                 //NEED TO FIGURE OUT HOW TO REMOVE POTENTIAL MATCHES THAT ARE ALREADY MATCHED
             }
             else if(event.target.id === "pass-button"){
-                unmatchedMates.shift()
+                potentialMates.shift()
+                debugger
                 renderPotential()
             }
         })
