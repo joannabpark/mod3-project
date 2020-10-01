@@ -15,7 +15,7 @@ class MatchesController < ApplicationController
     end
 
     def create
-      match = Match.create(match_params[:name])
+      match = Match.create(match_params)
       render json: MatchSerializer.new(match)
     end
 
