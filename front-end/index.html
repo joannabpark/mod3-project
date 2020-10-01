@@ -21,7 +21,7 @@
     <!-- navbar -->
     <div id='nav-bar'>
         <nav class="navbar navbar-expand-sm navbar-light bg-light">
-          <h1 class="text-left text-info font-weight-light" id='header'>Veggie 🍑 Delight</h1><br>
+          <h1 class="text-left text-info font-weight-light" id='header' name="nav-header-logo">Veggie 🍑 Delight</h1><br>
             <a class="navbar-brand" href="#"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -152,11 +152,20 @@
             <div class="col">
                 <div id='user-container'></div>
             </div>
-            <div class="col"> 
-                <div id='potential-matches'></div>
+            <div class="col">
+                <div id='my-matches'></div>
+                <div class='text-center'id='button-div'>
+                    <br><br><br><br><br><br><br><br><br><br><br>
+                    <div class="card-body text-center">
+                        <button type="button" id="make-match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
+                    </div>
+                    <div class="card-body text-center">
+                        <button type="button" id="pass-button" class="btn btn-light text-danger btn-lg btn-block">No go, Avocado.</button>
+                    </div>
+                </div>  
             </div>
            <div class="col"> 
-               <div id='my-matches'></div>  
+                <div id='potential-matches' class="carousel-inner"></div>
             </div>
         </div>
        
@@ -164,5 +173,5 @@
 
     <!-- footer -->
 
-    <div class="footer text-center" id='meat'>Playas gonna play, especially when they don't eat <strong>meat</strong>.</div>
+    <div class="footer text-center" id='meat'>Playa's gon' play, especially when they don't eat <strong>meat</strong>.</div>
 </html>

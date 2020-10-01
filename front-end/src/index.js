@@ -3,7 +3,7 @@ const signInForm = document.querySelector('#sign-in-form')
 const navBar = document.querySelector('#nav-bar')
 const userContainer = document.querySelector('#user-container')
 const potentialContainer = document.querySelector('#potential-matches')
-const header = document.querySelector('#header')
+const headerLogo = document.getElementsByName('nav-header-logo')[0]
 const meatText = document.querySelector('#meat')
 const createProfileLink = document.querySelector('#create-profile-link')
 const createProfileFormDiv = document.querySelector('#create-profile-form-div')
@@ -17,6 +17,9 @@ const deleteBtn = document.querySelector('#delete-button')
 const myMatchesBtn = document.querySelector('#match-button')
 const myMatchesDiv = document.querySelector("#my-matches")
 const findMatchesBtn = document.querySelector("#find-match-button")
+const btnDiv = document.querySelector('#button-div')
+const broccoliBtn = document.querySelector('#make-match-button')
+const passBtn = document.querySelector('#pass-button')
 
 //Need to include password entry
 //function to let user sign-in before seeing profile and matches
@@ -29,6 +32,7 @@ function signIn(){
     userContainer.style.display = "none"
     potentialContainer.style.display = "none"
     myMatchesDiv.style.display = 'none'
+    btnDiv.style.display = 'none'
     signInFormDiv.addEventListener('submit', function(event){
         event.preventDefault()
         const name = event.target[0].value
@@ -42,10 +46,12 @@ function signIn(){
                 deleteBtn.setAttribute('data-id', instance.id)
                 myMatchesBtn.setAttribute('data-id', instance.id)
                 findMatchesBtn.setAttribute('data-id', instance.id)
+                headerLogo.setAttribute('data-id', instance.id)
                 //assign id to all necessary buttons
                 signInFormDiv.style.display = "none"
                 titleHeader.style.display = 'none'
                 navBar.style.display = "block"
+                btnDiv.style.display = 'block'
                 signInForm.reset()
                 showUserAndPotentialMatchProfiles(instance.id)
             } else {
@@ -87,12 +93,12 @@ function deleteProfile(){
     })
 }
 
-//ISSUE WITH DISPLAYING OLD PROFILE AND NEW ONE
 function editProfile(){
     editBtn.addEventListener('click', function(event){
         userContainer.style.display = "none"
         potentialContainer.style.display = "none"
         myMatchesDiv.style.display = 'none'
+        btnDiv.style.display = 'none'
         const userId = event.target.dataset.id
         fetch(`http://localhost:3000/users/${userId}`)
         .then(resp => resp.json())
@@ -228,6 +234,8 @@ function seeMatches(){
         const userId = event.target.dataset.id
         potentialContainer.style.display = 'none'
         editProfileFormDiv.style.display = "none"
+        userContainer.style.display = "none"
+        btnDiv.style.display = 'none'
         fetch('http://localhost:3000/matches/')
         .then(resp => resp.json())
         .then(matches => {
@@ -353,11 +361,13 @@ function createProfileFormSubmission(){
     })
 }
 
+let potentialMates = []
 //function to display user profile and potential match profiles
 function showUserAndPotentialMatchProfiles(id){
     navBar.style.display = "block"
     titleHeader.style.display = "none"
     myMatchesDiv.style.display = 'none'
+    btnDiv.style.display = 'block'
     editProfileFormDiv.style.display = "none"
     fetch('http://localhost:3000/matches')
     .then(resp => resp.json())
@@ -370,6 +380,7 @@ function showUserAndPotentialMatchProfiles(id){
         .then(profiles => {
             potentialContainer.innerHTML = ""
             // const noMatchArray = profiles.data.filter(totalArray.includes(profile.id))
+            potentialMates = profiles.data.filter(profile => profile.id !== id)
             profiles.data.filter(profile => {
             if (profile.id === id) {
                 userContainer.innerHTML = 
@@ -390,39 +401,103 @@ function showUserAndPotentialMatchProfiles(id){
                     <br>`
                     userContainer.style.display = "block"
                 } else {
-                    // console.log(totalArray.some((element) => element !== parseInt(profile.id)))
-                    potentialContainer.innerHTML += 
-                    `<br>
-                    <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
-                        <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
-                        <div class="card-body">
-                            <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
-                            <p class="card-text text-center">"${profile.attributes.bio}"</p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item text-center">${profile.attributes.occupation}</li>
-                            <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
-                            <li class="list-group-item text-center">${profile.attributes.interests}</li>
-                            <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
-                        </ul>
-                        <div class="card-body text-center">
-                            <button type="button" name="make-match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
-                        </div>
-                        <div class="card-body text-center">
-                            <button type="button" name="pass-button" class="btn btn-light text-danger btn-lg btn-block">Hard pass on that ass!</button>
-                        </div>
-                    </div>
-                    <br>`
-                    potentialContainer.style.display = "block"
+                    
+                    // potentialContainer.innerHTML = 
+                    // `<br>
+                    
+                    //     <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
+                    //         <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
+                    //         <div class="card-body">
+                    //             <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
+                    //             <p class="card-text text-center">"${profile.attributes.bio}"</p>
+                    //         </div>
+                    //         <ul class="list-group list-group-flush">
+                    //             <li class="list-group-item text-center">${profile.attributes.occupation}</li>
+                    //             <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
+                    //             <li class="list-group-item text-center">${profile.attributes.interests}</li>
+                    //             <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
+                    //         </ul>
+                    //         <div class="card-body text-center">
+                    //             <button type="button" name="make-match-button" class="btn btn-info btn-lg btn-block"> I want your broccoli.</button>
+                    //         </div>
+                    //         <div class="card-body text-center">
+                    //             <button type="button" name="pass-button" class="btn btn-light text-danger btn-lg btn-block">Hard pass on that ass!</button>
+                    //         </div>
+                    //     </div>
+                    
+                    // <br>`
+                    // potentialContainer.style.display = "block"
                     
                 }
             })
+            selectCurrentPotential()
         })  
     })
 }
 
+function selectCurrentPotential(){
+    const profile = potentialMates[0]
+    potentialContainer.innerHTML = 
+        `<br>
+        
+            <div class="card mx-auto shadow-sm p-3 mb-5 bg-white rounded" style="width: 25rem;" name="profile-card" data-id=${profile.id}>
+                <img src="${profile.attributes.image_url}" class="card-img-top rounded-circle border border-info" alt="profile picture">
+                <div class="card-body">
+                    <h5 class="card-title font-weight-bold text-center">${profile.attributes.name}, ${profile.attributes.age}</h5>
+                    <p class="card-text text-center">"${profile.attributes.bio}"</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-center">${profile.attributes.occupation}</li>
+                    <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
+                    <li class="list-group-item text-center">${profile.attributes.interests}</li>
+                    <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
+                </ul>
+            </div>
+        
+        <br>`
+        potentialContainer.style.display = "block"
+        broccoliBtn.setAttribute('data-id',`${profile.id}`)
+        passBtn.setAttribute('data-id',`${profile.id}`)
+        btnDiv.addEventListener('click', function(event){
+            if (event.target.id === "make-match-button"){
+                const matcheeId = parseInt(event.target.dataset.id)
+                const matcherId = parseInt(event.target.parentNode.parentNode.parentNode.parentNode.firstElementChild.firstElementChild.children[1].dataset.id)
+                const newMatch = {
+                    matcher_id: matcherId,
+                    matchee_id: matcheeId
+                }
+                const reqObj = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify(newMatch)
+                }
+                fetch(`http://localhost:3000/matches`, reqObj)
+                .then(resp => resp.json())
+                .then(match => {
+                    console.log(match)
+                })
+                potentialMates.shift()
+                selectCurrentPotential()
+                //NEED TO FIGURE OUT HOW TO REMOVE POTENTIAL MATCHES THAT ARE ALREADY MATCHED
+            }
+            else if(event.target.id === "pass-button"){
+                potentialMates.shift()
+                selectCurrentPotential()
+            }
+        })
+        //add event listener to the buttons
+        //conditional statement made if they select yes or no, make patch request if they match
+        //get rid of current card and get the next card and render the next card
+}
 
-
+function headerClickEvent(){
+    headerLogo.addEventListener('click', function(event){
+        const id = event.target.dataset.id
+        showUserAndPotentialMatchProfiles(id)
+    })
+}
 
 
 
@@ -448,8 +523,10 @@ signIn()
 createProfile()
 seeMatches()
 backToPotentialMatches()
+headerClickEvent()
 editProfile()
 deleteProfile()
 logOut()
 profileButtonsListener()
+meatClick()
 // backToSignIn()
