@@ -5,3 +5,25 @@
     -webkit-justify-content: flex-end;
     justify-content: flex-end;  
 } 
+
+.form-control{
+margin: auto; 
+width: 60%; 
+}
+
+.form-to-middle{
+display: inline-block;
+text-align: center;
+}
+
+.text-moving{
+    margin-right: 163px;
+}
+
+.text-moving-pass{
+    margin-right: 190px;
+}
+
+#sign-in-form{
+    margin-left: 10px;
+}

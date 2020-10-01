@@ -50,32 +50,35 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
       </div>
       
-    <!-- content -->     
+        <!-- content -->     
 
-    <!-- sign-in-form -->
+        <!-- original sign-in-form -->
+        <div class="form-to-middle">
+            <div class="form-container" id="sign-in-form-div"> 
+                
+                    <form id="sign-in-form">
+                        <div class="form-group">
+                        <label class="text-moving-pass">Name</label>
+                        <input type="text" class="form-control">
+                        </div>   
 
-        <div class="form-container" id="sign-in-form-div">
-            <form id="sign-in-form">
-                <div class="form-group">
-                  <label>Name</label>
-                  <input type="text" class="form-control">
-                </div>
+                        <div class="form-group">
+                            <label class="text-moving">Password</label>
+                            <input type="password" class="form-control">
+                        </div>
 
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control">
-                </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-
-            <div id="dont-have-profile-container">
-                <br><p class="text-center">Don't have a profile yet? Grab some tofu and lets <a href="#" class="stretched-link" id="create-profile-link">create one!</a></p>
+                        <button type="submit" class="btn btn-primary">Submit</button>  
+                        
+                        <div id="dont-have-profile-container">
+                            <br><p class="text-center">Don't have a profile yet? Grab some tofu and lets <a href="#" class="stretched-link" id="create-profile-link">create one!</a></p>
+                        </div>  
+                        </div>
             </div>
+            </form> 
+        </div>    
 
-        </div>
 
-        <!-- create-profile-form -->
+         <!-- create-profile-form -->
 
         <div class="form-container" id="create-profile-form-div">
             <form id="create-form">
@@ -152,11 +155,9 @@
             <div class="col">
                 <div id='user-container'></div>
             </div>
-            <div class="col"> 
-                <div id='potential-matches'></div>
-            </div>
            <div class="col"> 
                <div id='my-matches'></div>  
+               <div id='potential-matches'></div>
             </div>
         </div>
        
