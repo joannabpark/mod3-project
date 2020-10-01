@@ -6,7 +6,7 @@
     justify-content: flex-end;  
 } 
 
-.form-control{
+/* .form-control{
 margin: auto; 
 width: 60%; 
 }
@@ -26,4 +26,12 @@ text-align: center;
 
 #sign-in-form{
     margin-left: 10px;
+} */
+
+.sign-in{
+    width: 63%;
+    padding-left: 40%;
+    padding-top: 5%;
+    padding-bottom: 5%;
 }
+
