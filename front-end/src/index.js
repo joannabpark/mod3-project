@@ -28,6 +28,7 @@ function signIn(){
     backBtn.style.display = "none"
     signInFormDiv.style.display = "block"
     editProfileFormDiv.style.display = "none"
+    createProfileFormDiv.style.display = "none"
     navBar.style.display = "none"
     createProfileForm.style.display = "none"
     userContainer.style.display = "none"
