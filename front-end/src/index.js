@@ -20,6 +20,7 @@ const findMatchesBtn = document.querySelector("#find-match-button")
 const btnDiv = document.querySelector('#button-div')
 const broccoliBtn = document.querySelector('#make-match-button')
 const passBtn = document.querySelector('#pass-button')
+const discardBtn = document.querySelector('#disgard-button')
 
 function signIn(){
     titleHeader.style.display = "block"
@@ -65,6 +66,7 @@ function createProfile(){
         backBtn.style.display = "block"
         signInFormDiv.style.display = "none"
         createProfileForm.style.display = "block"
+        createProfileFormDiv.style.display = 'block'
         createProfileFormSubmission()
     })
 }
@@ -256,6 +258,7 @@ function seeMatches(){
                                 <li class="list-group-item text-center">${user.attributes.location}</li>
                                 <li class="list-group-item text-center">${user.attributes.phone_number}</li>
                                 <li class="list-group-item text-center">${user.attributes.email_address}</li>
+                                <li class="list-group-item text-center"><button class='discard-button' data-id='${user.id}'>Discard this Veggie</button></li>
                             </ul>
                         </div>
                         <br>`
@@ -279,6 +282,7 @@ function seeMatches(){
                                 <li class="list-group-item text-center">${user.attributes.location}</li>
                                 <li class="list-group-item text-center">${user.attributes.phone_number}</li>
                                 <li class="list-group-item text-center">${user.attributes.email_address}</li>
+                                <li class="list-group-item text-center"><button class='discard-button' data-id='${user.id}'>Discard this Veggie</button></li>
                             </ul>
                         </div>
                         <br>`
@@ -288,6 +292,18 @@ function seeMatches(){
         })
     })
 }
+
+// function discardMatch(){
+//     myMatchesDiv.addEventListener('click', function(event){
+
+//         if (event.target.className === 'discard-button'){
+
+//         }
+//     })
+// }
+
+
+
 
 function backToPotentialMatches(){
     findMatchesBtn.addEventListener('click', function(event){
