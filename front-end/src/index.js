@@ -78,6 +78,7 @@ function deleteProfile(){
         .then(resp => resp.json())
         .then(data => {
             console.log(data)
+            alert("Profile deleted")
             signIn()
         })
     })
@@ -251,13 +252,13 @@ function seeMatches(){
                                 <p class="card-text text-center">"${user.attributes.bio}"</p>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item text-center">${user.attributes.occupation}</li>
-                                <li class="list-group-item text-center">${user.attributes.attracted_to}</li>
-                                <li class="list-group-item text-center">${user.attributes.interests}</li>
-                                <li class="list-group-item text-center">${user.attributes.veggie_type}</li>
-                                <li class="list-group-item text-center">${user.attributes.location}</li>
-                                <li class="list-group-item text-center">${user.attributes.phone_number}</li>
-                                <li class="list-group-item text-center">${user.attributes.email_address}</li>
+                                <li class="list-group-item text-center">Occupation: <strong>${user.attributes.occupation}</strong></li>
+                                <li class="list-group-item text-center">Attracted to: <strong>${user.attributes.attracted_to}</strong></li>
+                                <li class="list-group-item text-center">Interests: <strong>${user.attributes.interests}</strong></li>
+                                <li class="list-group-item text-center">Veggie Type: <strong>${user.attributes.veggie_type}</strong></li>
+                                <li class="list-group-item text-center">Location: <strong>${user.attributes.location}</strong></li>
+                                <li class="list-group-item text-center">Phone: <strong>${user.attributes.phone_number}</strong></li>
+                                <li class="list-group-item text-center">Email: <strong>${user.attributes.email_address}</strong></li>
                                 <li class="list-group-item text-center"><button class='discard-button' data-id='${user.id}'>Discard this Veggie</button></li>
                             </ul>
                         </div>
@@ -275,13 +276,13 @@ function seeMatches(){
                                 <p class="card-text text-center">"${user.attributes.bio}"</p>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item text-center">${user.attributes.occupation}</li>
-                                <li class="list-group-item text-center">${user.attributes.attracted_to}</li>
-                                <li class="list-group-item text-center">${user.attributes.interests}</li>
-                                <li class="list-group-item text-center">${user.attributes.veggie_type}</li>
-                                <li class="list-group-item text-center">${user.attributes.location}</li>
-                                <li class="list-group-item text-center">${user.attributes.phone_number}</li>
-                                <li class="list-group-item text-center">${user.attributes.email_address}</li>
+                            <li class="list-group-item text-center">Occupation: <strong>${user.attributes.occupation}</strong></li>
+                            <li class="list-group-item text-center">Attracted to: <strong>${user.attributes.attracted_to}</strong></li>
+                            <li class="list-group-item text-center">Interests: <strong>${user.attributes.interests}</strong></li>
+                            <li class="list-group-item text-center">Veggie Type: <strong>${user.attributes.veggie_type}</strong></li>
+                            <li class="list-group-item text-center">Location: <strong>${user.attributes.location}</strong></li>
+                            <li class="list-group-item text-center">Phone: <strong>${user.attributes.phone_number}</strong></li>
+                            <li class="list-group-item text-center">Email: <strong>${user.attributes.email_address}</strong></li>
                                 <li class="list-group-item text-center"><button class='discard-button' data-id='${user.id}'>Discard this Veggie</button></li>
                             </ul>
                         </div>
@@ -354,15 +355,22 @@ function createProfileFormSubmission(){
         .then(newProfile => {
             createProfileForm.reset()
             createProfileFormDiv.style.display = "none"
-            showUserAndPotentialMatchProfiles(newProfile.data.attributes.name)
+            myMatchesBtn.setAttribute('data-id', newProfile.data.id)
+            editBtn.setAttribute('data-id', newProfile.data.id)
+            deleteBtn.setAttribute('data-id', newProfile.data.id)
+            myMatchesBtn.setAttribute('data-id', newProfile.data.id)
+            findMatchesBtn.setAttribute('data-id', newProfile.data.id)
+            headerLogo.setAttribute('data-id', newProfile.data.id)
+            showUserAndPotentialMatchProfiles(newProfile.data.id)
         })
     })
 }
 
 let potentialMates = []
-let unmatchedMates =[]
+
 
 function showUserAndPotentialMatchProfiles(id){
+    potentialMates = []
     createProfileFormDiv.style.display = "none"
     navBar.style.display = "block"
     titleHeader.style.display = "none"
@@ -372,6 +380,7 @@ function showUserAndPotentialMatchProfiles(id){
     fetch('http://localhost:3000/matches')
     .then(resp => resp.json())
     .then(matches => {
+        console.log(matches)
         const matchers = matches.data.filter(function(match){ return id == match.attributes.matcher_id })
         const matcheeIdArray = matchers.map(a => a.attributes.matchee_id)           
         const matchees = matches.data.filter(function(match){ return id == match.attributes.matchee_id})
@@ -392,10 +401,10 @@ function showUserAndPotentialMatchProfiles(id){
                             <p class="card-text text-center">"${profile.attributes.bio}"</p>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item text-center">${profile.attributes.occupation}</li>
-                            <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
-                            <li class="list-group-item text-center">${profile.attributes.interests}</li>
-                            <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
+                            <li class="list-group-item text-center">Occupation: <strong>${profile.attributes.occupation}</strong></li>
+                            <li class="list-group-item text-center">Attracted To: <strong>${profile.attributes.attracted_to}</strong></li>
+                            <li class="list-group-item text-center">Interests: <strong>${profile.attributes.interests}</strong></li>
+                            <li class="list-group-item text-center">Veggie Type: <strong>${profile.attributes.veggie_type}</strong></li>
                         </ul>
                     </div>
                     <br>`
@@ -421,10 +430,10 @@ function renderPotential(){
                         <p class="card-text text-center">"${profile.attributes.bio}"</p>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item text-center">${profile.attributes.occupation}</li>
-                        <li class="list-group-item text-center">${profile.attributes.attracted_to}</li>
-                        <li class="list-group-item text-center">${profile.attributes.interests}</li>
-                        <li class="list-group-item text-center">${profile.attributes.veggie_type}</li>
+                        <li class="list-group-item text-center">Occupation: <strong>${profile.attributes.occupation}</strong></li>
+                        <li class="list-group-item text-center">Attracted To: <strong>${profile.attributes.attracted_to}</strong></li>
+                        <li class="list-group-item text-center">Interests: <strong>${profile.attributes.interests}</strong></li>
+                        <li class="list-group-item text-center">Veggie Type: <strong>${profile.attributes.veggie_type}</strong></li>
                     </ul>
                 </div>
             
@@ -467,7 +476,6 @@ function selectCurrentPotential(){
                 })
                 potentialMates.shift()
                 renderPotential()
-                //NEED TO FIGURE OUT HOW TO REMOVE POTENTIAL MATCHES THAT ARE ALREADY MATCHED
             }
             else if(event.target.id === "pass-button"){
                 squishSoundEffect()
