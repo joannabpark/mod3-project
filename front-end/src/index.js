@@ -399,11 +399,14 @@ function showUserAndPotentialMatchProfiles(id){
         const matcheeIdArray = matchers.map(a => a.attributes.matchee_id)           
         const matchees = matches.data.filter(function(match){ return id == match.attributes.matchee_id})
         const matcherIdArray = matchees.map(a => a.attributes.matcher_id)
+        const uniqMatcherIdArray = [...new Set(matcherIdArray)] 
+        const uniqMatcheeIdArray = [...new Set(matcheeIdArray)]
+        // debugger
         fetch('http://localhost:3000/users')
         .then(resp => resp.json())
         .then(profiles => {
             potentialContainer.innerHTML = ""
-            potentialMates = profiles.data.filter(profile => (profile.id !== id) && !(matcherIdArray.includes(parseInt(profile.id))) && !(matcheeIdArray.includes(parseInt(profile.id))))
+            potentialMates = profiles.data.filter(profile => (profile.id !== id) && !(uniqMatcherIdArray.includes(parseInt(profile.id))) && !(uniqMatcheeIdArray.includes(parseInt(profile.id))))
             profiles.data.filter(profile => {
             if (profile.id === id) {
                 userContainer.innerHTML = 
@@ -433,6 +436,7 @@ function showUserAndPotentialMatchProfiles(id){
 
 function renderPotential(){
     const profile = potentialMates[0]
+    console.log(profile)
         if (profile){
         potentialContainer.innerHTML = 
             `<br>
