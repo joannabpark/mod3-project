@@ -294,16 +294,28 @@ function seeMatches(){
     })
 }
 
-// function discardMatch(){
-//     myMatchesDiv.addEventListener('click', function(event){
-
-//         if (event.target.className === 'discard-button'){
-
-//         }
-//     })
-// }
-
-
+function discardMatch(){
+    myMatchesDiv.addEventListener('click', function(event){
+        const userId = parseInt(event.target.dataset.id)
+        if (event.target.className === 'discard-button'){
+            fetch('http://localhost:3000/matches/')
+            .then(resp => resp.json())
+            .then(matches => {
+                matches.data.forEach(function(match){
+                    const matchId = match.id
+                    const matcheeId = match.attributes.matchee_id
+                    if (matcheeId === userId) {
+                        fetch(`http://localhost:3000/matches/${matchId}`, { method: "DELETE"})
+                        .then(resp => resp.json())
+                        .then(data => {
+                            event.target.parentNode.parentNode.parentElement.remove()
+                        })
+                    }
+                })
+             })
+        }
+    })
+}
 
 
 function backToPotentialMatches(){
@@ -525,6 +537,7 @@ createProfile()
 seeMatches()
 backToPotentialMatches()
 headerClickEvent()
+discardMatch()
 editProfile()
 deleteProfile()
 logOut()
