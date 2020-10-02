@@ -304,7 +304,8 @@ function discardMatch(){
                 matches.data.forEach(function(match){
                     const matchId = match.id
                     const matcheeId = match.attributes.matchee_id
-                    if (matcheeId === userId) {
+                    const matcherId = match.attributes.matcher_id
+                    if (matcheeId === userId || matcherId === userId) {
                         fetch(`http://localhost:3000/matches/${matchId}`, { method: "DELETE"})
                         .then(resp => resp.json())
                         .then(data => {
