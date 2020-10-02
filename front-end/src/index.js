@@ -309,6 +309,7 @@ function discardMatch(){
                         fetch(`http://localhost:3000/matches/${matchId}`, { method: "DELETE"})
                         .then(resp => resp.json())
                         .then(data => {
+                            squishSoundEffect()
                             event.target.parentNode.parentNode.parentElement.remove()
                         })
                     }
